@@ -1,197 +1,280 @@
-# eDentist.AI – مساعد العيادات السنيّة
 
-منصة محادثة صوتية/نصية ثنائية اللغة (عربي/إنجليزي) تساعد المرضى على حجز المواعيد، تعديلها أو إلغائها، والاطلاع على معلومات الخدمات الطبية. تعتمد المنظومة على Gemini Live API، Prisma، وقاعدة بيانات PostgreSQL مع تكاملات اختيارية مع أنظمة الـPMS/CRM.
+# 📘 **E-Dentis_realtime — Realtime Voice AI Agent for Dental Clinics**
 
->.
+**E-Dentis_realtime** is a production-ready **realtime voice AI agent** built for dental clinics.
+Powered by **Gemini Live API**, it enables instant, natural, bilingual (Arabic/English) voice conversations for booking appointments, answering clinic FAQs, and assisting patients in real time.
 
----
+This project includes a complete **voice engine**, **LLM agent layer**, **realtime audio streaming**, **tool-calling**, **PMS integration**, **analytics dashboards**, and **a developer console**.
 
-## المتطلبات المسبقة
-
-| المكون | الإصدار الموصى به |
-|--------|-------------------|
-| Node.js | ≥ 18.x |
-| npm     | يأتي مع Node.js |
-| PostgreSQL | ≥ 14 |
-| حساب Google Gemini API | مفتاح فعّال |
-| (اختياري) تكامل PMS/CRM | مفاتيح GoHighLevel أو Salesforce أو HubSpot |
-
-تأكد أيضًا من تثبيت `git`, ويفضَّل إعداد `psql` للعمل مع قاعدة البيانات.
+A fully modular, scalable, and customizable system suitable for real-world clinic operations.
 
 ---
 
-## 1. استنساخ المشروع وتجهيز الفرع
+# 🚀 Features
 
-```bash
-git clone https://github.com/Moh-abufurha/E-Dentist.git
-cd E-Dentist
-git checkout V4_Ayed
+### 🎤 **Realtime Voice Assistant**
+
+* Live PCM streaming (16 kHz)
+* Ultra-low-latency LLM responses
+* High-quality AI speech output
+* Full Arabic + English support
+* Intelligent language detection
+
+### 📅 **Smart Appointment Handling**
+
+* Create / modify / cancel appointments
+* Required fields validation (name, phone, service)
+* Dentist suggestions & alternatives
+* Fully integrated PMS/CRM module (mock or real)
+
+### 🧠 **Intelligent Agent Layer**
+
+* Dynamic system instructions
+* Tool-calling integration (Altair, PMS tools)
+* Conversation state manager
+* Sanitization & safety filters
+
+### 🎛 **Simple Voice Console**
+
+A minimal UI for controlling voice sessions:
+
+* Start/End session
+* Mute microphone
+* Live audio meters
+* Connection status & errors
+* Bilingual hint messages
+
+### 📊 **Advanced Analytics Dashboard**
+
+* Session metrics
+* Latency, hallucination rate, success rate
+* Realtime logs
+* Sentiment tracking
+* Tool usage breakdown
+* Altair charts powered by LLM
+
+### 🧰 **Developer Console + Logging**
+
+* SidePanel console
+* Full streaming logs
+* Tool calls & responses
+* LLM tokens, messages, and events
+* Debuggable in realtime
+
+### 🔒 **Security**
+
+* Input sanitization
+* Safe function calling
+* Auth hooks
+* Config isolation
+* Logging safeguards
+
+---
+
+# 🏗 Architecture Overview
+
+```
+E-Dentis_realtime/
+│
+├── src/
+│   ├── components/
+│   │   ├── simple-voice/
+│   │   │   ├── VoiceAgentBootstrap.tsx     → AI bootstrap + system prompt config
+│   │   │   ├── SimpleVoiceConsole.tsx      → Primary voice interaction UI
+│   │   │   ├── ControlTray.tsx             → Audio/video/screen controller
+│   │   │   ├── AudioPulse.tsx              → Audio peak visualization
+│   │   │   └── SimpleVoiceConsole.scss     → UI styling
+│   │   │
+│   │   ├── dashboard/
+│   │   │   ├── AIDashboard.tsx             → Operational analytics dashboard
+│   │   │   ├── AnalyticsDashboard.tsx      → System performance metrics
+│   │   │   ├── AnalyticsOrchestrator.tsx   → LLM-driven analytics bridge
+│   │   │   └── Altair.tsx                  → Altair/Vega chart renderer
+│   │   │
+│   │   ├── logger/
+│   │   │   ├── Logger.tsx                  → Log viewer for LLM events
+│   │   │   ├── mock-logs.ts
+│   │   │   └── logger.scss
+│   │   │
+│   │   ├── settings/
+│   │   │   ├── SettingsDialog.tsx          → Voice & system configuration UI
+│   │   │   ├── VoiceSelector.tsx           → Choose prebuilt LLM voice
+│   │   │   ├── ResponseModalitySelector.tsx→ Choose audio/text response mode
+│   │   │   └── SCSS styles
+│   │   │
+│   │   └── side-panel/
+│   │       └── SidePanel.tsx               → Developer console (LLM logs)
+│   │
+│   ├── contexts/
+│   │   └── LiveAPIContext.tsx              → Central provider for Gemini Live API
+│   │
+│   ├── hooks/
+│   │   ├── use-live-api.ts                 → WebSocket + realtime streaming logic
+│   │   ├── use-webcam.ts
+│   │   ├── use-screen-capture.ts
+│   │   ├── use-media-stream-mux.ts
+│   │   └── useAnalyticsBridge.ts
+│   │
+│   ├── lib/
+│   │   ├── audio-recorder.ts               → Raw PCM mic recorder
+│   │   ├── audio-streamer.ts               → Audio streaming engine
+│   │   ├── audio-utils.ts                  → PCM encoding helpers
+│   │   ├── gemini-voice-engine.ts          → Voice engine (LLM + TTS)
+│   │   ├── genai-live-client.ts            → Custom LiveAPI client wrapper
+│   │   ├── audioworklet-registry.ts        → AudioWorklet loaders
+│   │   ├── utils.ts                        → Utility collection
+│   │   ├── vol-meter.ts                    → Audio volume analyzer
+│   │   └── store-logger.ts                 → Zustand logger store
+│   │
+│   ├── ai/
+│   │   ├── language.ts                     → Language detection (AR/EN)
+│   │   ├── pmsIntegration.ts               → Clinic PMS integration logic
+│   │   ├── auth.ts                         → Agent authentication logic
+│   │   └── security.ts                     → Sanitization & validation
+│   │
+│   ├── services/
+│   │   └── conversation_manager.ts         → Conversation flow manager
+│   │
+│   ├── App.tsx / index.tsx                 → App root
+│   └── SCSS & CSS files
+│
+├── server/
+│   ├── db.ts                               → Prisma connector
+│   ├── dbBookingIntegration.ts             → DB-based booking management
+│   ├── pmsIntegration.ts                   → PMS tool functions
+│   ├── analytics-engine.js                 → Backend analytics pipeline
+│   ├── security.ts                         → Security rules
+│   └── auth.ts
+│
+├── prisma/
+│   ├── schema.prisma                       → DB schema (doctors, bookings, content)
+│   ├── migration_lock.toml
+│   └── seed.ts
+│
+├── public/                                 → Static assets
+├── package.json
+├── tsconfig.json
+└── README.md
 ```
 
 ---
 
-## 2. إعداد متغيرات البيئة
+# ⚙️ Installation
 
-أنشئ ملف `.env` في جذر المشروع (لا يُرفع إلى Git). القيم التالية نموذج يوضح أهم المفاتيح:
-
-```bash
-# مفاتيح Gemini (مكررة مع React لأن الواجهة تبنى في المتصفح)
-GEMINI_API_KEY=your_server_side_key
-REACT_APP_GEMINI_API_KEY=your_browser_key
-
-PROJECT_ID=your-google-cloud-project
-REACT_APP_PROJECT_ID=your-google-cloud-project
-
-GEMINI_MODEL=gemini-2.5-audio
-REACT_APP_GEMINI_MODEL=gemini-2.5-audio
-LIVE_MODEL=models/gemini-2.0-flash-exp
-REACT_APP_LIVE_MODEL=models/gemini-2.0-flash-exp
-
-API_URL=https://generativelanguage.googleapis.com/v1beta/models
-REACT_APP_API_URL=https://generativelanguage.googleapis.com/v1beta/models
-
-# سلسلة الاتصال بقاعدة البيانات (عدّل البيانات لتناسب إعدادك)
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/edentist?schema=public"
-
-
-> راجع `docs/pms-integration.md`, `docs/voice-engine.md`, و `docs/security.md` لمزيد من التفاصيل حول المفاتيح وحماية البيانات.
-
----
-
-## 3. تثبيت الحزم
+### 1. Install dependencies
 
 ```bash
 npm install
 ```
 
-> في الأنظمة التي تتطلب شهادات HTTPS محلية (مثل Windows)، استخدم `npm run start-https` لاحقًا لتشغيل CRA بنمط HTTPS.
+### 2. Prepare the database
+
+```bash
+npx prisma migrate deploy
+npx prisma db seed
+```
+
+### 3. Configure environment variables
+
+Create a **.env** file:
+
+```
+GEMINI_API_KEY=your_google_key
+DATABASE_URL=postgresql://user:password@host:port/db
+PMS_PROVIDER_KEY=mock
+JWT_SECRET=your_jwt_secret
+ANALYTICS_MODE=enabled
+```
+
+### 4. Start the development server
+
+```bash
+npm run dev
+```
+
+### 5. Open the app
+
+```
+http://localhost:3000
+```
 
 ---
 
-## 4. تجهيز قاعدة البيانات PostgreSQL
+# 🧪 Usage Examples
 
-1. **إنشاء قاعدة بيانات فارغة** (مرة واحدة):
-   ```bash
-   createdb edentist
-   ```
-   أو عبر PgAdmin/واجهة أخرى.
+### 🎤 Start a voice session
 
-2. **تشغيل مخططات Prisma**:
-   ```bash
-   npx prisma generate
-   npx prisma migrate deploy
-   # أو في بيئة تطوير جديدة:
-   # npx prisma migrate dev --name init
-   ```
+* Click **Start session**
+* Begin speaking in Arabic or English
+* The assistant answers instantly using Gemini Live
 
-3. **إدخال بيانات أولية** (أطباء + قوالب ردود). افتح `psql`:
-   ```bash
-   psql postgresql://postgres:postgres@localhost:5432/edentist
-   ```
+### 💬 Ask for bookings
 
-   ثم شغّل الأوامر التالية أو عدلها حسب احتياجاتك:
-   ```sql
-   INSERT INTO doctors (name, specialty, branch, work_start, work_end, available_days)
-   VALUES
-     ('Dr. Ayed Al-Harbi', 'تقويم الأسنان', 'Riyadh - Olaya', '09:00', '17:00', ARRAY['Sunday','Monday','Tuesday','Wednesday','Thursday']),
-     ('Dr. Lina Samir', 'تبييض الأسنان', 'Riyadh - Malqa', '12:00', '20:00', ARRAY['Sunday','Monday','Tuesday','Wednesday','Thursday']);
+> “I want to book a cleaning on Sunday at 2 PM.”
 
-   INSERT INTO clinic_content (slug, locale, content, tags)
-   VALUES
-     ('booking.confirmed', 'ar', 'تم حجز موعدك مع الدكتور {{doctor_name}} في فرع {{clinic_branch}} يوم {{appointment_date}} الساعة {{appointment_time}}.', ARRAY['booking']),
-     ('booking.confirmed', 'en', 'Your appointment with Dr. {{doctor_name}} at {{clinic_branch}} is booked for {{appointment_date}} at {{appointment_time}}.', ARRAY['booking']),
-     ('booking.rescheduled', 'ar', 'تم تعديل موعدك ليكون يوم {{appointment_date}} الساعة {{appointment_time}}.', ARRAY['booking']),
-     ('booking.rescheduled', 'en', 'Your appointment has been rescheduled to {{appointment_date}} at {{appointment_time}}.', ARRAY['booking']),
-     ('booking.missing_fields', 'ar', 'لإتمام الحجز أحتاج إلى: {{missing_fields}}.', ARRAY['booking']),
-     ('booking.missing_fields', 'en', 'To complete the booking I still need: {{missing_fields}}.', ARRAY['booking']),
-     ('booking.cancelled', 'ar', 'تم إلغاء الموعد بنجاح. نأمل نراك قريباً!', ARRAY['booking']),
-     ('booking.cancelled', 'en', 'Your appointment has been cancelled successfully. We hope to see you soon!', ARRAY['booking']),
-     ('inquiry.general', 'ar', 'يسرّنا الرد على استفساراتك حول خدمات العيادة مثل التنظيف، التقويم، الزراعة أو التبييض. كيف يمكنني المساعدة؟', ARRAY['inquiry']),
-     ('inquiry.general', 'en', 'I’m happy to help with questions about cleaning, orthodontics, implants, or whitening. How can I assist you today?', ARRAY['inquiry']);
-   ```
+### 🔄 Modify or cancel an appointment
 
-   يمكنك إضافة المزيد من الأطباء أو المحتوى بنفس البنية متى احتجت.
+> “Reschedule my appointment to 4 PM.”
 
-4. **اختبر الجداول**:
-   ```bash
-   npx prisma studio
-   ```
-   افتح المتصفح على العنوان الذي يظهر للتأكد من البيانات.
+### 📈 Request analytics
+
+> “Show me a graph of appointments by day.”
+
+The agent will call the **render_altair** tool.
 
 ---
 
-## 5. تشغيل النظام محليًا
+# 🛠 Tech Stack
 
-1. **تشغيل واجهة التطوير (CRA + HTTPS)**:
-   ```bash
-   npm run start-https
-   ```
-   - سيفتح المتصفح على `https://localhost:3000`.
-   - قم بالموافقة على الشهادة الذاتية لمرة واحدة.
-
-2. **الحوار الصوتي/النصي**:
-   - استخدم اللوحة الجانبية لإرسال رسائل نصية.
-   - يمكن تفعيل الميكروفون أو مشاركة الشاشة عبر أزرار `ControlTray`.
-
-3. **اختبارات صوتية سريعة** (اختياري):
-   ```bash
-   npm run test:audio         # إرسال ملف WAV قصير والحصول على رد مسموع
-   npm run test:voice-engine  # اختبار التحويلات الصوتية ثنائية اللغة
-   npm run demo:conversation  # سكربت محادثة نصية تجريبية (Node.js)
-   ```
-
-> جميع هذه الأوامر تعتمد على ضبط مفاتيح Gemini بشكل صحيح في `.env`.
+* **React + TypeScript**
+* **Gemini Live API (Streaming LLM)**
+* **WebRTC / MediaStream API**
+* **PCM 16 kHz audio pipeline**
+* **Prisma ORM**
+* **PostgreSQL**
+* **Node.js backend**
+* **Zustand**
+* **Altair / Vega charts**
+* **SCSS modules**
 
 ---
 
-## 6. تكاملات الـPMS/CRM (اختياري)
+# 🧭 Roadmap
 
-- فعّل المتغيرات الخاصة بكل موفّر داخل `.env` كما هو موضح في `docs/pms-integration.md`.
-- نقاط النهاية المحلية متاحة عبر البروكسي (`/api/integrations/pms/...`) أثناء تشغيل CRA.
-- يمكن استخدام لوحة التحليلات لدفع تقارير الأداء مباشرة لأنظمة الطرف الثالث.
-
----
-
-## 7. بنية المجلدات المهمة
-
-| المسار | الوصف |
-|--------|-------|
-| `src/services/conversation_manager.ts` | منطق المحادثة وتدفق الحجوزات |
-| `server/dbBookingIntegration.ts` | عمليات Prisma المباشرة على جدول الحجوزات |
-| `docs/voice-engine.md` | إعداد مسارات STT/TTS |
-| `scripts/*` | سكربتات تشغيل واختبار سريعة |
-| `prisma/migrations` | تعريف مخطط قاعدة البيانات |
+* [ ] Mobile-friendly UI
+* [ ] Video-call support
+* [ ] WhatsApp voice integration
+* [ ] Real PMS integration (Dentrix, CareStack…)
+* [ ] Export conversation transcripts (PDF)
+* [ ] Multi-agent support
+* [ ] Admin dashboard improvements
+* [ ] Fine-tuned dental FAQ model
 
 ---
 
-## 8. نشر النسخة أو مشاركة المشروع
+# 🐞 Troubleshooting
 
-1. اضبط مفاتيح البيئة على الخادم (سواء باستخدام Docker أو خدمة CI/CD).
-2. شغّل `npm run build` للحصول على نسخة إنتاجية.
-3. قم بتشغيل الـ backend (إذا كنت ستفصل الكود إلى طبقة Node مستقلة) أو استخدم خدمات استضافة CRA.
-4. تأكد من إنشاء قاعدة بيانات Prod وتشغيل `npx prisma migrate deploy` عليها قبل نشر الواجهة.
+### ❌ Microphone not working
 
----
+→ Check browser permissions
+→ Use HTTPS
+→ Restart the browser
 
-## 9. الدعم والتوثيق الإضافي
+### ❌ No response from the assistant
 
-- **الأمان والالتزام**: راجع `docs/security.md`.
-- **طبقة الصوت**: راجع `docs/voice-engine.md`.
-- **التكاملات الخارجية**: راجع `docs/pms-integration.md`.
-- **البنية عالية التوافر**: راجع `docs/high-availability.md`.
-- **تشغيل الأعطال والفشل**: راجع `docs/runbooks/voice-agent-failover.md`.
-- **أدلة الالتزام HIPAA/SOC2**: راجع `docs/compliance-evidence.md`.
-- **اختبارات الأمان**: شغّل `npm test` لقراءة اختبارات Jest في `src/__tests__/security-sanitizer.test.ts`.
+→ Invalid GEMINI_API_KEY
+→ Gemini Live API disabled on your Google project
 
-لأي استفسار إضافي أو مساهمة، يرجى فتح تذكرة جديدة (Issue) داخل المستودع. بالتوفيق! 🎧🦷
----
+### ❌ Appointment not saving
 
-## Clinic content templates / ????? ???? ???????
+→ Check Prisma migrations
+→ Confirm `DATABASE_URL`
+→ Ensure backend server is running
 
-- ??? ????? ????? ???? `clinic_content` ???? ?? ?????? `20251112153000_create_clinic_content` ???? ???????? ???? ???? ?? ??? `ConversationManager` ?????? ???? ?????? ???????? ???????? ?????? ??? ?????? ??????.
-- ?????? ?? ?????? ??????? ???? ????? Prisma ??????? ??? ??? ?????????:
-  ```bash
-  npx prisma migrate deploy
-  npx prisma db seed
-  ```
-- ???? ????? ??????? ??? ??? ??? `psql` ?? Prisma Studio ?????? ?? ????? ???? ????? ??? `slug` (??? `booking.confirmed`) ?????? (`ar` ?? `en`). ???? ?????? ???????? ??? `{{doctor_name}}`, `{{appointment_date}}`, ??????.
+### ❌ Audio lag
+
+→ Check network speed
+→ Ensure 16 kHz PCM
+→ Disable VPNs
+
+
