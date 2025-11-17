@@ -89,7 +89,7 @@ E-Dentis_realtime/
 │   ├── react-app-env.d.ts
 │   ├── setupProxy.js
 │   ├── setupTests.ts
-│   │
+│
 │   ├── components/
 │   │   ├── simple-voice/
 │   │   │   ├── VoiceAgentBootstrap.tsx
@@ -132,17 +132,17 @@ E-Dentis_realtime/
 │   │   └── side-panel/
 │   │       ├── side-panel.scss
 │   │       └── SidePanel.tsx
-│   │
+│
 │   ├── contexts/
 │   │   └── LiveAPIContext.tsx
-│   │
+│
 │   ├── hooks/
 │   │   ├── use-live-api.ts
 │   │   ├── use-webcam.ts
 │   │   ├── use-screen-capture.ts
 │   │   ├── use-media-stream-mux.ts
 │   │   └── useAnalyticsBridge.ts
-│   │
+│
 │   ├── lib/
 │   │   ├── audio-recorder.ts
 │   │   ├── audio-streamer.ts
@@ -162,7 +162,7 @@ E-Dentis_realtime/
 │   │   └── worklets/
 │   │       ├── audio-processing.ts
 │   │       └── vol-meter.ts
-│   │
+│
 │   ├── ai/
 │   │   ├── language.ts
 │   │   ├── pmsIntegration.ts
@@ -175,6 +175,9 @@ E-Dentis_realtime/
 │   │   ├── analytics/
 │   │   │   └── index.ts
 │   │   │
+│   │   ├── integrations/
+│   │   │   └── index.ts
+│   │   │
 │   │   ├── dashboard/
 │   │   │   ├── ai-dashboard.scss
 │   │   │   ├── AIDashboard.tsx
@@ -183,12 +186,9 @@ E-Dentis_realtime/
 │   │   │   ├── AnalyticsOrchestrator.tsx
 │   │   │   └── index.ts
 │   │   │
-│   │   ├── integrations/
-│   │   │   └── index.ts
-│   │   │
 │   │   └── voice/
 │   │       └── index.ts
-│   │
+│
 │   └── utils/
 │       └── language.ts
 │
@@ -209,7 +209,7 @@ E-Dentis_realtime/
 │   ├── pmsIntegration.ts
 │   ├── analytics-engine.js
 │   ├── security.ts
-│   └── audit-logger.ts? (من الصورة قد يكون موجود)
+│   └── audit-logger.ts
 │
 ├── package.json
 ├── package-lock.json
@@ -218,6 +218,7 @@ E-Dentis_realtime/
 ├── LICENSE
 ├── .env
 └── README.md
+
 
 ```
 
